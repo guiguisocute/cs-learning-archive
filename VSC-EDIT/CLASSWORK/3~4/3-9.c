@@ -28,18 +28,19 @@ int main() {
         if (a*a + b*b == c*c) {
             printf("Right triangle\n");
         }
-        if (a*a + b*b < c*c) {
-            printf("Obtuse triangle\n");
-        }
         if (a*a + b*b > c*c) {
             printf("Acute triangle\n");
         }
-        if (a == b && b == c) {
-            printf("Equilateral triangle\n");
+        if (a*a + b*b < c*c) {
+            printf("Obtuse triangle\n");
         }
         if (a == b || b == c || a == c) {
             printf("Isosceles triangle\n");
         }
+        if (a == b && b == c) {
+            printf("Equilateral triangle\n");
+        }
+
     }
     
     system("pause");
