@@ -1,7 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
+#define lli long long int
 
-long long int fibo(int n){
+lli fibo(int n){
     if(n == 1 || n == 2){
         return 1;
     }else{
@@ -9,14 +10,19 @@ long long int fibo(int n){
     }
     
 }
+
 int main(){
     int n;
     scanf("%d",&n);
+    lli a[n];
+    for(int i = 0; i < n; i++){
+        scanf("%lld",&a[i]);
+    }
 
-    long long int fn = fibo(n);
-    long long x = fn;
-    printf("%lld",x);
+    for(int i = 0; i < n; i++){
+        printf("%lld\n",fibo(a[i]));
+    }
 
     system("pause");
-    return 0;   
+    return 0;
 }
