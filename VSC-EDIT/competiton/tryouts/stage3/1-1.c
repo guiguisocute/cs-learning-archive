@@ -9,6 +9,8 @@ int main() {
 
     printf("%lld\n", sum);
 
+    whi
+
     system("pause");
     return 0;
 }
