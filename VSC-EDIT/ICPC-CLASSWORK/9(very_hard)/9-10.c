@@ -7,7 +7,7 @@ int main(){
 
 
     int a[n][n];
-    int index = 0;          //index是一维的线性索引, 如果我们要表示第i行第 j列的元素，那么它的位置可以用 index =i x N +i来表示。
+    int index = 0;          //index是一维的线性索引, 如果我们要表示第i行第j列的元素，那么它的位置可以用 index =i x N +i来表示。
     int fill = 0;
 
     while(index < n * n){

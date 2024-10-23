@@ -1,43 +1,33 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
-void bubblesort(int num_in[], int n) {
-    int temp;
-    for(int i = 0; i < n-1; i++) {
-        for(int j = 0; j < n-i-1; j++) {
-            if(num_in[j] > num_in[j+1]) {
-                temp = num_in[j];
-                num_in[j] = num_in[j+1];
-                num_in[j+1] = temp;
+int main() {
+    int N;
+    char line[201]; // 行缓冲区
+    scanf("%s", line);
+    N = strlen(line); // 获取 N 的值
+    char grid[200][201]; // 点阵图数组
+    strcpy(grid[0], line); // 复制第一行
+    for (int i = 1; i < N; i++) {
+        scanf("%s", grid[i]); // 读取剩余的行
+    }
+
+    char current_char = grid[0][0]; // 初始化当前字符
+    int count = 0; // 初始化计数器
+    printf("%d", N); // 输出 N
+
+    for (int i = 0; i < N; i++) { // 遍历每一行
+        for (int j = 0; j < N; j++) { // 遍历每一列
+            if (grid[i][j] == current_char) {
+                count++; // 相同字符，计数加一
+            } else {
+                printf(" %d", count); // 输出当前计数
+                current_char = grid[i][j]; // 更新当前字符
+                count = 1; // 重置计数器
             }
         }
     }
-}
-
-int main() {
-    int num_in[3];
-    char order[4];  // 输入的顺序字母
-    // 读取三个整数
-    for(int i = 0; i < 3; i++) {
-        scanf("%d", &num_in[i]);
-    }
-    // 排序数字
-    bubblesort(num_in, 3);
-    
-    // 读取顺序字母
-    scanf("%s", order);
-
-    // 根据输入的顺序打印出对应的数字
-    for(int i = 0; i < 3; i++) {
-        if(order[i] == 'A') {
-            printf("%d ", num_in[0]);
-        } else if(order[i] == 'B') {
-            printf("%d ", num_in[1]);
-        } else if(order[i] == 'C') {
-            printf("%d ", num_in[2]);
-        }
-    }
-    printf("\n");
+    printf(" %d\n", count); // 输出最后一个计数
 
     return 0;
 }
