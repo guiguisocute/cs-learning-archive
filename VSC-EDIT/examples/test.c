@@ -1,33 +1,34 @@
 #include <stdio.h>
-#include <string.h>
+
+// 函数：二进制转十进制
+unsigned long long binaryToDecimal(int binary) {
+    unsigned long long decimal = 0;
+    unsigned long long base = 1; // 2^0
+
+    while(binary > 0) {
+        // 获取最低位
+        int last_bit = binary & 1;
+        // 累加到十进制结果
+        decimal += last_bit * base;
+        // 更新权值（乘以2）
+        base <<= 1; // 相当于 base *= 2
+        // 右移一位，处理下一个二进制位
+        binary >>= 1;
+    }
+
+    return decimal;
+}
 
 int main() {
-    int N;
-    char line[201]; // 行缓冲区
-    scanf("%s", line);
-    N = strlen(line); // 获取 N 的值
-    char grid[200][201]; // 点阵图数组
-    strcpy(grid[0], line); // 复制第一行
-    for (int i = 1; i < N; i++) {
-        scanf("%s", grid[i]); // 读取剩余的行
-    }
+    int binary;
+    printf("请输入一个二进制数（不带前导零）：");
+    scanf("%d", &binary);
 
-    char current_char = grid[0][0]; // 初始化当前字符
-    int count = 0; // 初始化计数器
-    printf("%d", N); // 输出 N
-
-    for (int i = 0; i < N; i++) { // 遍历每一行
-        for (int j = 0; j < N; j++) { // 遍历每一列
-            if (grid[i][j] == current_char) {
-                count++; // 相同字符，计数加一
-            } else {
-                printf(" %d", count); // 输出当前计数
-                current_char = grid[i][j]; // 更新当前字符
-                count = 1; // 重置计数器
-            }
-        }
-    }
-    printf(" %d\n", count); // 输出最后一个计数
-
+    unsigned long long decimal = binaryToDecimal(binary);
+    printf("%llu",decimal);
     return 0;
 }
+
+
+
+
