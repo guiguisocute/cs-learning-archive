@@ -1,34 +1,57 @@
-#include <stdio.h>
+#include<stdio.h>
 
-// 函数：二进制转十进制
-unsigned long long binaryToDecimal(int binary) {
-    unsigned long long decimal = 0;
-    unsigned long long base = 1; // 2^0
+/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+typedef struct shangpin{
+	char name[50];
+	float price;
+	int num;
+	float P;
+}shangpin;
 
-    while(binary > 0) {
-        // 获取最低位
-        int last_bit = binary & 1;
-        // 累加到十进制结果
-        decimal += last_bit * base;
-        // 更新权值（乘以2）
-        base <<= 1; // 相当于 base *= 2
-        // 右移一位，处理下一个二进制位
-        binary >>= 1;
-    }
-
-    return decimal;
+int main(int argc, char** argv) {
+	float p;
+	shangpin sp[10];
+	//输入 
+	for(int i=0;i<10;i++){
+		scanf("%s %.2f %d",&sp[i].name,&sp[i].price,&sp[i].num);
+	}
+	scanf("%.2f",&p);
+	//计算总价 
+	for(int i=0;i<10;i++){
+		sp[i].P=sp[i].num*sp[i].price;
+	}
+	//总价升序排列 
+	for(int j =0;j<9;j++){
+		for(int i=0;i<10-j;i++){
+			if(sp[i].P<sp[i+1].P){
+				shangpin huan = sp[i];
+				sp[i] = sp[i+1];
+				sp[i+1] = huan;
+			}
+		}
+	}
+	//输出 
+	for(int i=0;i<10;i++){
+		printf("%s %.2f %d %.2f\n",&sp[i].name,&sp[i].price,&sp[i].num,&sp[i].P);
+	}
+	//查找目标总价
+	int start=0,middle,end=9;
+	int c=1;
+	while(start<=end){
+		middle=(start+end)/2;
+		if(p>sp[middle].P){
+			start=middle+1;
+		}
+		if(p<sp[middle].P){
+			end=middle-1;
+		}
+		else if(p=sp[middle].P){
+				printf("%s %.2f %d %.2f\n",&sp[middle].name,&sp[middle].price,&sp[middle].num,&sp[middle].P);
+			c=0;
+		}
+	} 
+	if(c=1){
+		printf("Not found");
+	}
+	return 0;
 }
-
-int main() {
-    int binary;
-    printf("请输入一个二进制数（不带前导零）：");
-    scanf("%d", &binary);
-
-    unsigned long long decimal = binaryToDecimal(binary);
-    printf("%llu",decimal);
-    return 0;
-}
-
-
-
-
