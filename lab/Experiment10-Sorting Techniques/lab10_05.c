@@ -39,7 +39,7 @@ void sift(int a[], int k, int n) // 参数：k = 需要调整的根下标；n = 
 void heapSort(int a[],int n)
 {
     int i;
-    for (i=n/2;i>=1;i--)    //从最下面开始建队
+    for (i=n/2;i>=1;i--)    //从最下面开始建队，n/2是最后一个元素的父母
         sift(a,i,n);        //目的是把数组给堆化
     for (i=n;i>1;i--)
         {
