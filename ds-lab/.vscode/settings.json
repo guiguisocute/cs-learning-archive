@@ -1,0 +1,14 @@
+{
+    "C_Cpp.errorSquiggles": "enabled",
+    "files.associations": {
+        "math.h": "c",
+        "3-3.C": "cpp",
+        "stdlib.h": "c",
+        "stdio.h": "c",
+        "A3.C": "cpp",
+        "B2.C": "cpp",
+        "lab8_04.C": "cpp",
+        "lab8_06.C": "cpp",
+        "ljb.h": "c"
+    }
+}

@@ -1,0 +1,8 @@
+1001   James    80 90 77
+1002   Robert   90 67 88
+1003   Michael 70 77 66
+1004   William  88 72 69
+1005   Tony      92 88 90
+1006   David    90 93 94
+1007   Richard 95 92 87
+1008   Charles 99 69 88
