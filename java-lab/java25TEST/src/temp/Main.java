@@ -1,6 +1,7 @@
 package temp;
 // 这是 Java 25 的新语法
 
+import module java.base;
 public class Main {
     void main() {
         // java.base 模块导出的所有包（如 java.util、java.io、java.time …）

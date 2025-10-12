@@ -17,8 +17,9 @@
       <sourceFolder url="file://$MODULE_DIR$/class_test/week_3/src" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/ex_excesice/src" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/class_test/week_5/src" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/class_test/week_4/src" isTestSource="true" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="liberica-1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
