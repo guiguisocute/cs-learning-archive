@@ -81,11 +81,6 @@
       <a name="label" val="halt"/>
       <a name="labelloc" val="east"/>
     </comp>
-    <comp lib="4" loc="(70,130)" name="Counter">
-      <a name="width" val="4"/>
-      <a name="max" val="0xf"/>
-      <a name="trigger" val="falling"/>
-    </comp>
     <comp lib="0" loc="(270,270)" name="Pin">
       <a name="facing" val="south"/>
       <a name="output" val="true"/>
@@ -93,11 +88,12 @@
       <a name="label" val="addr_out"/>
       <a name="labelloc" val="east"/>
     </comp>
-    <comp lib="0" loc="(310,220)" name="Constant"/>
-    <comp lib="4" loc="(360,130)" name="RAM">
-      <a name="addrWidth" val="4"/>
-      <a name="bus" val="separate"/>
+    <comp lib="4" loc="(70,130)" name="Counter">
+      <a name="width" val="4"/>
+      <a name="max" val="0xf"/>
     </comp>
+    <comp lib="0" loc="(60,220)" name="Clock"/>
+    <comp lib="0" loc="(310,220)" name="Constant"/>
     <comp lib="0" loc="(410,120)" name="Pin">
       <a name="facing" val="south"/>
       <a name="output" val="true"/>
@@ -105,6 +101,9 @@
       <a name="label" val="data_out"/>
       <a name="labelloc" val="east"/>
     </comp>
-    <comp lib="0" loc="(60,220)" name="Clock"/>
+    <comp lib="4" loc="(360,130)" name="RAM">
+      <a name="addrWidth" val="4"/>
+      <a name="bus" val="separate"/>
+    </comp>
   </circuit>
 </project>
