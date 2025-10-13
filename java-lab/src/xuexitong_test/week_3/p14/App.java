@@ -1,4 +1,4 @@
-package p14;
+package xuexitong_test.week_3.p14;
 import java.util.Scanner;
 //编写方法 void append()，在顺序表末尾增加一组元素（数量未知）。当顺序表满时， 则自动扩容 1/2。
 

@@ -1,4 +1,4 @@
-package e315;
+package ex_excesice.e315;
 
 public class SalaryIncome extends Income {
 

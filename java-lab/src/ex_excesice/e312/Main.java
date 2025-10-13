@@ -1,4 +1,4 @@
-package e312;
+package ex_excesice.e312;
 
 public class Main {
 

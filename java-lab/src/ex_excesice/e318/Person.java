@@ -1,4 +1,4 @@
-package e318;
+package ex_excesice.e318;
 
 public class Person {
 

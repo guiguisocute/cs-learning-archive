@@ -107,5 +107,4 @@ int main()
   k=TopSort(g);
   printf("\nk = %d",k);
   if(k<g.n) printf("\n该图存在环！\n");   //原来拓扑排序还有这个作用
-  return 0;
 }

@@ -1,4 +1,4 @@
-package e315;
+package ex_excesice.e315;
 
 /**
  * 稿费收入税率是20%

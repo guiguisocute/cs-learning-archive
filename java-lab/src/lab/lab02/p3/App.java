@@ -1,10 +1,9 @@
-package p3;
+package lab.lab02.p3;
 /*
 实现一个矩阵类，实现初始化矩阵，矩阵转置，矩阵加法及输出矩阵等功能。
 矩阵元素可由随机数生成 100 以内的整数。
  */
 import java.util.Random;
-import java.util.Arrays;
 
 public class App {
     public static void main(String[] args) {

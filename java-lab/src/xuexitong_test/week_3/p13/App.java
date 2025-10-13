@@ -1,4 +1,4 @@
-package p13;
+package xuexitong_test.week_3.p13;
 
 import java.util.Scanner;
 /*

@@ -1,4 +1,4 @@
-package p1;
+package xuexitong_test.week_5.p1;
 
 /*
 创建Point类，

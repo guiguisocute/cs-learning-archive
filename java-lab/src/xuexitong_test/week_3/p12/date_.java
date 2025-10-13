@@ -1,4 +1,4 @@
-package p12;
+package xuexitong_test.week_3.p12;
 
 // import java.util.Scanner;
 

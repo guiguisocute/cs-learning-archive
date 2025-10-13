@@ -1,4 +1,4 @@
-package Quickverify.checkversion;
+package checkversion;
 
 public class CheckJavaVersion {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package e318;
+package ex_excesice.e318;
 
 /**
  * Learn Java from https://www.liaoxuefeng.com/

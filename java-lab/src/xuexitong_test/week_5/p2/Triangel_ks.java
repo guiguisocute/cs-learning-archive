@@ -1,4 +1,4 @@
-package p2;
+package xuexitong_test.week_5.p2;
 
 /*
 设计一个三角形类：

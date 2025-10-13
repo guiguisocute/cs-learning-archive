@@ -1,4 +1,4 @@
-package e314;
+package ex_excesice.e314;
 
 public class Main {
     public static void main(String[] args) {

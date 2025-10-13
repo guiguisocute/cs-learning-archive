@@ -1,4 +1,4 @@
-package p1;
+package lab.lab02.p1;
 
 /*
 一、构造顺序表，并满足如下要求：
