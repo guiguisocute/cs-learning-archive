@@ -38,4 +38,16 @@ private static final char[] value
 ```
 这个方法什么功能其实不太重要，最关键的是这个方法传参类型并不是`String`，而是`CharSequence`,这个其实是一个接口，`String`满足了一个它的实现。这样说可能有点绕，只需要明白：`CharSequence` 相当于是一个更大（抽象）的“类”（意会）。一种“所有能被看作字符序列的东西”的统一抽象接口
 
-> 
+返回索引的方法：
+```java
+"Hello".indexOf("l"); // 2
+"Hello".lastIndexOf("l"); // 3
+"Hello".startsWith("He"); // true
+"Hello".endsWith("lo"); // true
+//但是这些方法都不是上文刚刚所说的CharSequence类型，而是真真正正传统的String
+```
+通过索引返回字符串的方法
+```java
+"Hello".substring(2); // "llo"
+"Hello".substring(2, 4); "ll"
+```
