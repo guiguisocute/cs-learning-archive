@@ -14,7 +14,12 @@ public class App {
 
         Recognizer rcg = new Recognizer();
 
-        Shape[] s = { new Rectangle(2, 3), new Circle(10), new SanJiao(2, 3), new SanJiao(2, 3, 4) };
+        Shape[] s = {
+                new Rectangle(2, 3),
+                new Circle(10),
+                new SanJiao(2, 3),
+                new SanJiao(2, 3, 4)
+        };
 
         for (int i = 0; i < s.length; i++)
             rcg.showInfo(s[i]);

@@ -11,7 +11,7 @@ TODO:【游戏：棒子老虎鸡虫】
 ```
 棒子 VS 虫 红方输
 老虎 VS 老虎 和局
-鸡 VS 虫 红方胜
+鸡 VS 虫 红方胜只有底和高无法计算周长。
 虫 VS 鸡 红方输
 老虎 VS 棒子 红方输
 总比分：红方 VS 黑方=1:3，红方输
@@ -21,7 +21,7 @@ import java.util.Random;
 
 import Quickverify.temp_circle.res;
 public class App {
-    static int TEST_GROUP = 5;
+//    static int TEST_GROUP = 5;
     public static void main(String[] args) {
         // for(int i = 0; i < TEST_GROUP; i++){
         //     Random random = new Random();
@@ -39,9 +39,9 @@ public class App {
 }
 
 class Chess_ctrl{
-    private String team_name;
-    private String chessForPrint;
-    private Chess[] chess_array;
+    private final String team_name;
+    private final String chessForPrint;
+    private final Chess[] chess_array;
     // private static final Class<?>[] TYPES = { Bangzi.class, Laohu.class, Ji.class, Bug.class };     //用到了泛型，存放四种棋子类型的Class对象，<?>的意思可以是任意类型相当于离散数学的任有，这回总知道专业课的用处了吧
     // private Random random = new Random();
 

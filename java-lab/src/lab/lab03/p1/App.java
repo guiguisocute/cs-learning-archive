@@ -66,7 +66,8 @@ class Triangle {
 
     double area() {
         double p = (long_1 + long_2 + long_3) / 2;
-        return Math.sqrt(p * (p - long_1) * (p - long_2) * (p - long_3));
+        area = Math.sqrt(p * (p - long_1) * (p - long_2) * (p - long_3));
+        return area;
     }
 }
 

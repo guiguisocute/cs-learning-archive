@@ -80,7 +80,7 @@ class Dog extends Animal{
 
 
 class Qiwei{
-    private String qiwei_name;
+    private final String qiwei_name;
     Qiwei(String name){
         qiwei_name = name;
     }
