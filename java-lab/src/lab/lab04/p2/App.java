@@ -22,6 +22,8 @@ class Animal{
 }
 
 class Cat extends Animal{
+
+    
     @Override
     void smell(Qiwei qiwei_in){
         if(qiwei_in instanceof BoneQiwei){

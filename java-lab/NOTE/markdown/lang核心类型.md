@@ -51,3 +51,17 @@ private static final char[] value
 "Hello".substring(2); // "llo"
 "Hello".substring(2, 4); "ll"
 ```
+
+#### 去除首尾空白字符   
+```java
+"  \tHello\r\n ".trim(); // "Hello"
+```
+这个方法对于考试完全标准输入没有用，但是实际上无论是shell系统还是其他网页的人机交互中用户自己的输入很容易多输入各种空格换行和tab，高级版本用`strip()`会更好点全角空格也能删
+对于空白的字符串还有以下布尔方法：
+```java
+"".isEmpty(); // true，因为字符串长度为0
+"  ".isEmpty(); // false，因为字符串长度不为0
+"  \n".isBlank(); // true，因为只包含空白字符
+" Hello ".isBlank(); // false，因为包含非空白字符
+```
+
