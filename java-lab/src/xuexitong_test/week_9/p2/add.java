@@ -22,7 +22,7 @@ kkk's salary is :10680.0
 sss's salary is :7900.0
 eee's salary is :6600.0
  */
-public class App{
+class App{
 
     public static void main(String[] args){
 
@@ -51,7 +51,7 @@ public class App{
     }
 }
 
-interface add {
+ public interface add {
     void addSalary();
 }
 
