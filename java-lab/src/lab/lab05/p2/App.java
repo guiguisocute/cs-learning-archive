@@ -16,42 +16,35 @@ public class App {
 
 class Cylinder {
     double high;
-    double Vol;
-    double SurfaceArea;
     Circle circle;
 
     Cylinder(double Circle_r_in, double Cylinder_high_in) {
         circle = new Circle(Circle_r_in);
         high = Cylinder_high_in;
-        Vol = high * circle.Area;
-        SurfaceArea = 2 * circle.Area + circle.Perimeter * high;
+
     }
 
     void disVol() {
-        System.out.printf("该圆柱体的体积为：%.2f\n", Vol);
+        System.out.printf("该圆柱体的体积为：%.2f\n", circle.r * circle.r * 3.14 * high);
     }
 
     void disSurfaceArea() {
-        System.out.printf("该圆柱体的表面积为：%.2f\n", SurfaceArea);
+        System.out.printf("该圆柱体的表面积为：%.2f\n", 2 * circle.r * circle.r * 3.14 + circle.r * 2 * 3.14 * high);
     }
 
     class Circle {
         double r;
-        double Perimeter;
-        double Area;
 
         Circle(double Circle_r_in) {
             r = Circle_r_in;
-            Perimeter = r * 2 * 3.14;
-            Area = r * r * 3.14;
         }
 
         void disPerimeter() {
-            System.out.printf("该圆柱里的圆周长为：%.2f\n", Perimeter);
+            System.out.printf("该圆柱里的圆周长为：%.2f\n", r * 2 * 3.14);
         }
 
         void disArea() {
-            System.out.printf("该圆柱里的圆面积为：%.2f\n", Area);
+            System.out.printf("该圆柱里的圆面积为：%.2f\n", r * r * 3.14);
         }
 
     }
