@@ -9,7 +9,7 @@ public class app {
 class PointCard{
     String id;
     int points;
-    boolean isFrozen;+
+    boolean isFrozen;
 
     PointCard(String id_in, int initialPoints){
         this.id = id_in;
