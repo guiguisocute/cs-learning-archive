@@ -74,7 +74,7 @@ public class App {
                 System.out.println("请输入运算符op：");
                 char op = scanner.next().charAt(0);
 
-                int result = Compute.compute(x, y, op);     //方法throws了异常那么一定要在上层全部都有catch处理
+                int result = Compute.compute(x, y, op);     //方法throws了异常那么一定要在这层层全部都有catch处理
                 System.out.println(x + " " + op + " " + y + " = " + result);
                 break;
 
@@ -85,6 +85,9 @@ public class App {
             }
             catch(InvalidOperatorException e){
                 System.out.println(e.getMessage());
+
+
+                
                 break;
             }
             catch(ArithmeticOverflowException e){
