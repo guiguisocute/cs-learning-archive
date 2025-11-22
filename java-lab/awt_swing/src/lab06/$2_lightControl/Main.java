@@ -1,4 +1,4 @@
-package lightContrl;
+package lab06.$2_lightControl;
 
 import java.awt.*;
 import java.awt.event.*;
