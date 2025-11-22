@@ -2,6 +2,9 @@ package lab06.$2_lightControl;
 
 import java.awt.*;
 import java.awt.event.*;
+
+//TODO:要求用两种方法实现：1.一般方法;2.界面与事件处理者相分离的方法
+
 class lamp extends Frame  {
     Label lb1,lb2;
     Button b_open,b_close;
