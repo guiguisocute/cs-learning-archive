@@ -70,8 +70,8 @@ class CalculatorFrame extends JFrame {
     }
 
     private void initListener() {
-        calcButton.addActionListener(new ActionListener() {         //匿名类的实践
-
+        calcButton.addActionListener(new ActionListener() {         //是定义了一个实现了AL接口的匿名类，并且通过new实例化该匿名类，然后转型为AL，不过好像Java8对于这种只有一个方法的接口（函数式接口）可以用Lambda表达式"->"，指针味好浓哦，学到了一点
+//现在终于体会到匿名类的意义了……调框架确实很刚需啊
             @Override
             public void actionPerformed(ActionEvent e) {
                 errorLabel.setText("");
