@@ -36,7 +36,7 @@ class CalculatorFrame extends JFrame {
         this.setLayout(new BorderLayout());
         this.setSize(400, 100);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Swing特有的方便关闭方式
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Swing特有的方便关闭方式，好爽啊！不用去写那一坨空实现的方法了
 
         JPanel inputPanel = new JPanel(new FlowLayout());
         num1Field = new JTextField(5);
