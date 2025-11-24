@@ -59,7 +59,6 @@ class CalculatorFrame extends JFrame {
 
         JPanel errorPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         errorLabel = new JLabel(" ");
-        errorLabel.setForeground(Color.RED);
         JLabel tipTitle = new JLabel("错误提示: ");     // 你看用swing的Label就不用去考虑编码问题了，伟大无需多言！
         errorPanel.add(tipTitle);
         errorPanel.add(errorLabel);
@@ -90,37 +89,42 @@ class CalculatorFrame extends JFrame {
                     double n2 = Double.parseDouble(str2);
                     double result = 0;
 
-                    // 4. 计算逻辑
-                    switch (op) {
-                        case "+":
-                            result = n1 + n2;
-                            break;
-                        case "-":
-                            result = n1 - n2;
-                            break;
-                        case "×":
-                            result = n1 * n2;
-                            break;
-                        case "÷":
-                            if (Math.abs(n2) < 1e-6) { // 浮点数判0的方法，总之不能直接用 n2 == 0，而且也不能不抛，浮点数除0不会直接捕获ArithmeticException的
-                                throw new ArithmeticException("除数不能为0");
-                            }
-                            result = n1 / n2;
-                            break;
+                    if (op != null) {
+                        switch (op) {
+                            case "+":
+                                result = n1 + n2;
+                                break;
+                            case "-":
+                                result = n1 - n2;
+                                break;
+                            case "×":
+                                result = n1 * n2;
+                                break;
+                            case "÷":
+                                if (Math.abs(n2) < 1e-6) { // 浮点数判0的方法，总之不能直接用 n2 == 0，而且也不能不抛，浮点数除0不会直接捕获ArithmeticException的
+                                    throw new ArithmeticException("除数不能为0");
+                                }
+                                result = n1 / n2;
+                                break;
+                        }
                     }
-                String formattedResult = String.format("%.2f", result);
+                    String formattedResult = String.format("%.2f", result);
                 resultField.setText(formattedResult);
-                errorLabel.setForeground(Color.GREEN);
+                errorLabel.setForeground(Color.GREEN.darker());
                 errorLabel.setText("还好，一切如愿以偿");
 
                 } catch (NullTextFieldException ex) {
+                    errorLabel.setForeground(Color.RED);
                     errorLabel.setText(ex.getMessage());
                 } catch (NumberFormatException ex) {
+                    errorLabel.setForeground(Color.RED);
                     errorLabel.setText("格式错误: 请输入有效的数字");
                 } catch (ArithmeticException ex) {
+                    errorLabel.setForeground(Color.RED);
                     errorLabel.setText("算术错误: " + ex.getMessage());
                 //简单兜个底
                 } catch (Exception ex) {
+                    errorLabel.setForeground(Color.RED);
                     errorLabel.setText("未知错误: " + ex.toString());
                 }
             }
