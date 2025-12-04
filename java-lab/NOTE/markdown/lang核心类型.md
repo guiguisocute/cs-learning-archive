@@ -65,3 +65,48 @@ private static final char[] value
 " Hello ".isBlank(); // false，因为包含非空白字符
 ```
 
+### 包装类
+> 基本类型-> 面向对象
+
+int -> Integer
+double -> Double
+char -> Character
+boolean -> Boolean
+long -> Long
+float -> Float
+byte -> Byte
+short -> Short
+
+
+发现都是首字母大写，很完美地转换成类了，这样的转型可以由JVM直接用语法糖随便转，然后就可以使用这些包装类的各种 **静态方法** （BTW函数好像都是首字母大写的）
+比如
+```java
+Integer.parseInt("123"); // 123
+Double.parseDouble("3.14"); // 3.14
+```
+当然由于字符串本身就是一个类了，所以也可以类似这样转回去
+```java
+String.valueOf(123); // "123"
+String.valueOf(3.14); // "3.14"
+```
+
+包装类型的函数都大同小异，现在下面例子里演示几个常用的
+```java
+Integer.toBinaryString(10); // "1010"
+Integer.toHexString(255); // "ff"
+Integer.toOctalString(8); // "10"
+Integer.compare(10, 20); // -1，因为10小于20
+Integer.intValue(50); //直接输出值
+Integer.max(10, 20); // 20
+Integer.min(10, 20); // 10
+Integer.sum(10, 20); // 30
+Integer.bitCount(15); // 4，因为15的二进制表示1111中有4个1
+Character.isDigit('5'); // true
+Character.isLetter('a'); // true
+Character.isWhitespace(' '); // true
+Character.toUpperCase('a'); // 'A'
+Character.toLowerCase('A'); // 'a'
+Boolean.parseBoolean("true"); // true
+Boolean.toString(true); // "true"
+
+
