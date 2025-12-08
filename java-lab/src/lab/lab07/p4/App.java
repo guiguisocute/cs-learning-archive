@@ -30,5 +30,13 @@ public class App {
 }
 
 class BufferArea {
+
+}
+
+class ThreadPutNumber{
+
+}
+
+class ThreadGetNumber{
     
 }
