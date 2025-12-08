@@ -24,5 +24,11 @@ put number is 95
 main is over!
  */
 public class App {
+    public static void main(String[] args) {
+        
+    }
+}
 
+class BufferArea {
+    
 }
