@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Bank_main {
     public static void main(String[] args) {
-        bank a = new bank("A","100");
+        bank a = new bank("A", "100");
         bank b = new bank("B", "250");
         System.out.println(a);
         System.out.println(b);
@@ -14,14 +14,15 @@ public class Bank_main {
         String in1 = sc.nextLine();
         a.transfer(b, in1);
         sc.close();
-        
+
     }
 }
 
-class bank{
+class bank {
     private String name;
-    private BigDecimal value;       //金额相关实在不想用double，太灾难了
-    bank(String InName, String InValue){
+    private BigDecimal value; // 金额相关实在不想用double，太灾难了
+
+    bank(String InName, String InValue) {
         name = InName;
         value = new BigDecimal(InValue);
     }
@@ -31,11 +32,11 @@ class bank{
         return name + "账户的余额为：" + value.toString();
     }
 
-    void transfer(bank B, String InValue){
+    void transfer(bank B, String InValue) {
         BigDecimal in = new BigDecimal(InValue);
-        if(value.compareTo(in) < 0){
+        if (value.compareTo(in) < 0) {
             System.out.println("您的余额不足！");
-        }else{
+        } else {
             value = value.subtract(in);
             B.value = B.value.add(in);
             System.out.println(name + "向" + B.name + "转账" + InValue + "元后:");
