@@ -69,8 +69,11 @@ class BufferArea {
         }
 
         isEmpty = true;
-        notifyAll();
         return value;
+    }
+
+    synchronized void release() {
+        notifyAll();
     }
 
 }
@@ -119,6 +122,7 @@ class ThreadGetNumber extends Thread {
             } else {
                 System.out.println(val + " is not a prime!");
             }
+            bufferArea.release();
         }
     }
 
