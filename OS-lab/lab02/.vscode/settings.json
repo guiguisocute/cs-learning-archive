@@ -1,0 +1,15 @@
+{
+  "C_Cpp.default.compilerPath": "/usr/bin/gcc",
+  "C_Cpp.default.includePath": [
+    "${workspaceFolder}/include",
+    "/usr/lib/gcc/x86_64-linux-gnu/13/include",
+    "/usr/local/include",
+    "/usr/include/x86_64-linux-gnu",
+    "/usr/include"
+  ],
+  "C_Cpp.default.intelliSenseMode": "linux-gcc-x64",
+  "C_Cpp.default.cStandard": "c11",
+  "files.associations": {
+    "*.h": "c"
+  }
+}

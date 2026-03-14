@@ -1,0 +1,126 @@
+#!/usr/bin/expect -f
+
+proc show_usage {} {
+    puts "用法:"
+    puts "  ./scripts/run_fcfs.exp data/case_fcfs_5.txt ?./scheduler_lab?"
+    puts "  ./scripts/run_fcfs.exp --all ?./scheduler_lab? ?data目录?"
+    exit 1
+}
+
+proc collect_input_lines {case_file} {
+    set fp [open $case_file r]
+    set raw_lines [split [read $fp] "\n"]
+    close $fp
+
+    set lines {}
+    foreach line $raw_lines {
+        set trimmed [string trim $line]
+        if {$trimmed ne ""} {
+            lappend lines $trimmed
+        }
+    }
+
+    if {[llength $lines] == 0} {
+        puts "错误: 输入文件为空 -> $case_file"
+        exit 1
+    }
+
+    return $lines
+}
+
+proc replay_case {case_file program_path} {
+    if {![file exists $case_file]} {
+        puts "错误: 找不到输入文件 $case_file"
+        exit 1
+    }
+
+    set lines [collect_input_lines $case_file]
+    set idx 0
+    set total [llength $lines]
+
+    puts "\n===== $case_file ====="
+    flush stdout
+
+    set timeout -1
+    spawn $program_path
+
+    while {$idx < $total} {
+        expect "请输入操作(1:开始进程调度；0:结束进程)："
+        set op [lindex $lines $idx]
+        incr idx
+        send -- "$op\r"
+
+        if {$op eq "0"} {
+            expect eof
+            return
+        }
+
+        expect "请输入进程数量："
+        if {$idx >= $total} {
+            puts "错误: 输入文件缺少进程数量 -> $case_file"
+            exit 1
+        }
+
+        set n [lindex $lines $idx]
+        incr idx
+        send -- "$n\r"
+
+        expect "请输入进程的参数："
+        expect "id号  名字  到达时间  执行时间(分钟)："
+
+        for {set i 0} {$i < $n} {incr i} {
+            if {$idx >= $total} {
+                puts "错误: 输入文件中的进程参数数量不足 -> $case_file"
+                exit 1
+            }
+            send -- "[lindex $lines $idx]\r"
+            incr idx
+        }
+    }
+
+    expect eof
+}
+
+if {$argc < 1 || $argc > 3} {
+    show_usage
+}
+
+set mode [lindex $argv 0]
+set program "./scheduler_lab"
+set case_dir "data"
+
+if {$mode eq "--all"} {
+    if {$argc >= 2} {
+        set program [lindex $argv 1]
+    }
+    if {$argc == 3} {
+        set case_dir [lindex $argv 2]
+    }
+
+    if {![file exists $program]} {
+        puts "错误: 找不到可执行文件 $program"
+        exit 1
+    }
+
+    if {![file isdirectory $case_dir]} {
+        puts "错误: 找不到数据目录 $case_dir"
+        exit 1
+    }
+
+    foreach case_file [lsort [glob -nocomplain -directory $case_dir *.txt]] {
+        replay_case $case_file $program
+    }
+    exit 0
+}
+
+set case_file $mode
+if {$argc == 2} {
+    set program [lindex $argv 1]
+}
+
+if {![file exists $program]} {
+    puts "错误: 找不到可执行文件 $program"
+    exit 1
+}
+
+replay_case $case_file $program
