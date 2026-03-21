@@ -1,0 +1,47 @@
+#!/usr/bin/expect -f
+
+proc trim_trailing_prompt {captured_output} {
+    set trailing_prompt "\n请输入操作(1：开始进程调度；-1：结束进程）"
+
+    if {[string match "*$trailing_prompt" $captured_output]} {
+        set prompt_start [expr {[string length $captured_output] - [string length $trailing_prompt]}]
+        return [string range $captured_output 0 [expr {$prompt_start - 1}]]
+    }
+
+    return $captured_output
+}
+
+proc run_case {binary_path case_path} {
+    set fp [open $case_path r]
+    set payload [read $fp]
+    close $fp
+
+    puts -nonewline $payload
+    puts "======================="
+
+    log_user 0
+    spawn $binary_path
+    send -- $payload
+    expect eof
+    log_user 1
+
+    puts -nonewline [trim_trailing_prompt $expect_out(buffer)]
+}
+
+if {$argc != 1} {
+    puts "用法: scripts/run_case.exp <case-file|--all>"
+    exit 1
+}
+
+set arg [lindex $argv 0]
+set binary "./sjf_lab"
+
+if {$arg eq "--all"} {
+    foreach case_file [lsort [glob -nocomplain data/*.txt]] {
+        puts "\n===== $case_file ====="
+        run_case $binary $case_file
+    }
+    exit 0
+}
+
+run_case $binary $arg
