@@ -1,0 +1,32 @@
+#!/usr/bin/expect -f
+
+proc run_case {case_path} {
+    set fh [open $case_path r]
+    set lines [split [read $fh] "\n"]
+    close $fh
+
+    spawn ./bin/priority_scheduler
+    foreach line $lines {
+        if {$line eq ""} {
+            continue
+        }
+        expect ":"
+        send -- "$line\r"
+    }
+    expect eof
+}
+
+if {$argc != 1} {
+    puts "用法: scripts/run_priority.exp <case-file|--all>"
+    exit 1
+}
+
+set arg0 [lindex $argv 0]
+if {$arg0 eq "--all"} {
+    foreach case_path [lsort [glob -nocomplain data/*.in]] {
+        puts "===== $case_path ====="
+        run_case $case_path
+    }
+} else {
+    run_case $arg0
+}
