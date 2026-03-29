@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(make:*)",
+      "Bash(chmod +x /home/guiguisocute/Project/jxnu-OS-src/lab05/scripts/run_rr.exp)"
+    ]
+  }
+}
