@@ -1,0 +1,29 @@
+#!/usr/bin/expect -f
+
+set timeout 5
+
+proc run_case {case_file} {
+    spawn ./bin/lab08
+
+    set fp [open $case_file r]
+    while {[gets $fp line] >= 0} {
+        expect -re {请输入选项: |请输入作业名: |请输入要回收的作业名: |主存大小\(单位: KB\): }
+        send -- "$line\r"
+    }
+    close $fp
+
+    expect eof
+}
+
+if {$argc == 1 && [lindex $argv 0] eq "--all"} {
+    foreach case_file [lsort [glob -nocomplain data/*.in data/*.txt]] {
+        puts "===== replay $case_file ====="
+        run_case $case_file
+    }
+} elseif {$argc == 1} {
+    run_case [lindex $argv 0]
+} else {
+    puts "用法: scripts/run_case.exp data/sample_case_01.txt"
+    puts "或:   scripts/run_case.exp --all"
+    exit 1
+}
