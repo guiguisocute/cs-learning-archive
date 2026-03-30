@@ -1,0 +1,13 @@
+{
+  "files.associations": {
+    "*.h": "c",
+    "*.c": "c"
+  },
+  "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
+  "editor.rulers": [
+    80,
+    100
+  ],
+  "editor.formatOnSave": false,
+  "files.trimTrailingWhitespace": true
+}

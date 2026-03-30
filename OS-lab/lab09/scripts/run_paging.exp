@@ -1,0 +1,56 @@
+#!/usr/bin/expect -f
+
+proc read_case_lines {case_path} {
+    set fh [open $case_path r]
+    set content [read $fh]
+    close $fh
+    set trimmed [string trim $content]
+    if {$trimmed eq ""} {
+        return {}
+    }
+    return [split $trimmed "\n"]
+}
+
+proc replay_case {binary case_path} {
+    puts "\n===== 回放样例: [file tail $case_path] ====="
+    spawn $binary
+    foreach raw_line [read_case_lines $case_path] {
+        set line [string trim $raw_line]
+        after 80
+        send -- "$line\r"
+    }
+    expect eof
+}
+
+set project_dir [file normalize [file join [file dirname [info script]] ".."]]
+set binary [file join $project_dir "lab09"]
+set data_dir [file join $project_dir "data"]
+
+if {$argc == 0} {
+    puts "用法:"
+    puts "  scripts/run_paging.exp sample_case_01.txt"
+    puts "  scripts/run_paging.exp --all"
+    exit 1
+}
+
+if {![file executable $binary]} {
+    puts "未找到可执行程序: $binary"
+    puts "请先执行: make"
+    exit 1
+}
+
+set arg0 [lindex $argv 0]
+if {$arg0 eq "--all"} {
+    foreach case_path [lsort [glob -nocomplain [file join $data_dir "*.txt"] [file join $data_dir "*.in"]]] {
+        replay_case $binary $case_path
+    }
+    exit 0
+}
+
+set case_path [file join $data_dir $arg0]
+if {![file exists $case_path]} {
+    puts "找不到样例文件: $case_path"
+    exit 1
+}
+
+replay_case $binary $case_path
