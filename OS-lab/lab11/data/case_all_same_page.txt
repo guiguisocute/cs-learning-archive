@@ -1,0 +1,10 @@
+3
+1
+job_same_fifo
+6
+5 5 5 5 5 5
+2
+job_same_lru
+6
+5 5 5 5 5 5
+0

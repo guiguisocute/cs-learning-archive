@@ -1,0 +1,42 @@
+#!/usr/bin/expect -f
+
+proc run_case {case_file} {
+    set fh [open $case_file r]
+    set file_data [read $fh]
+    close $fh
+
+    set lines [split $file_data "\n"]
+
+    spawn ./bitmap_lab
+
+    foreach raw_line $lines {
+        set line [string trim $raw_line]
+        if {$line eq ""} {
+            continue
+        }
+        expect {
+            "：" {}
+            "choice：" {}
+            eof { exit 1 }
+        }
+        send -- "$line\r"
+    }
+
+    expect eof
+}
+
+if {$argc == 1 && [lindex $argv 0] eq "--all"} {
+    foreach case_file [lsort [glob -nocomplain data/*.in]] {
+        puts "==== replay $case_file ===="
+        run_case $case_file
+    }
+    exit 0
+}
+
+if {$argc != 1} {
+    puts "用法：scripts/run_case.exp <data/case.in>"
+    puts "   或：scripts/run_case.exp --all"
+    exit 1
+}
+
+run_case [lindex $argv 0]

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="520" viewBox="0 0 1100 520">
+  <rect width="100%" height="100%" fill="white" />
+  <text x="550.00" y="36" font-size="24" text-anchor="middle" fill="#111">SSTF</text>
+  <rect x="30" y="60" width="1020" height="400" rx="6" fill="#f1f1f1" />
+  <line x1="30" y1="80" x2="1050" y2="80" stroke="#d0d0d0" stroke-width="1" />
+  <polyline points="50.00,175.88 172.50,197.59 295.00,201.21 417.50,146.93 540.00,105.33 662.50,257.29 785.00,300.70 907.50,304.32 1030.00,411.06" fill="none" stroke="#111" stroke-width="2" />
+  <circle cx="50.00" cy="175.88" r="4.5" fill="red" />
+<circle cx="172.50" cy="197.59" r="4.5" fill="red" />
+<circle cx="295.00" cy="201.21" r="4.5" fill="red" />
+<circle cx="417.50" cy="146.93" r="4.5" fill="red" />
+<circle cx="540.00" cy="105.33" r="4.5" fill="red" />
+<circle cx="662.50" cy="257.29" r="4.5" fill="red" />
+<circle cx="785.00" cy="300.70" r="4.5" fill="red" />
+<circle cx="907.50" cy="304.32" r="4.5" fill="red" />
+<circle cx="1030.00" cy="411.06" r="4.5" fill="red" />
+  <text x="50.00" y="62" font-size="18" text-anchor="middle" fill="#111">53</text>
+<text x="172.50" y="62" font-size="18" text-anchor="middle" fill="#111">65</text>
+<text x="295.00" y="62" font-size="18" text-anchor="middle" fill="#111">67</text>
+<text x="417.50" y="62" font-size="18" text-anchor="middle" fill="#111">37</text>
+<text x="540.00" y="62" font-size="18" text-anchor="middle" fill="#111">14</text>
+<text x="662.50" y="62" font-size="18" text-anchor="middle" fill="#111">98</text>
+<text x="785.00" y="62" font-size="18" text-anchor="middle" fill="#111">122</text>
+<text x="907.50" y="62" font-size="18" text-anchor="middle" fill="#111">124</text>
+<text x="1030.00" y="62" font-size="18" text-anchor="middle" fill="#111">183</text>
+</svg>

@@ -1,0 +1,10 @@
+5
+1
+job_large_fifo
+7
+0 1 2 0 1 2 0
+2
+job_large_lru
+7
+0 1 2 0 1 2 0
+0

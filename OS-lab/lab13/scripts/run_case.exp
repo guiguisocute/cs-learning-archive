@@ -1,0 +1,33 @@
+#!/usr/bin/expect -f
+
+proc run_case {case_file} {
+    set fp [open $case_file r]
+    set content [read $fp]
+    close $fp
+
+    spawn ./build/device_manager
+    foreach line [split $content "\n"] {
+        if {$line eq ""} {
+            continue
+        }
+        expect "："
+        send -- "$line\r"
+    }
+    expect eof
+}
+
+if {$argc == 1 && [lindex $argv 0] eq "--all"} {
+    foreach case_file [lsort [glob -nocomplain data/*.in]] {
+        puts "===== replay $case_file ====="
+        run_case $case_file
+    }
+    exit 0
+}
+
+if {$argc != 1} {
+    puts "Usage: ./scripts/run_case.exp data/sample_case_01.in"
+    puts "   or: ./scripts/run_case.exp --all"
+    exit 1
+}
+
+run_case [lindex $argv 0]

@@ -1,0 +1,45 @@
+#!/usr/bin/expect -f
+
+proc feed_case {binary case_file} {
+    set fp [open $case_file r]
+    set data [split [read $fp] "\n"]
+    close $fp
+
+    eval spawn [list $binary]
+    foreach line $data {
+        if {$line eq ""} {
+            continue
+        }
+        expect {
+            "：" {}
+            eof { break }
+            timeout {}
+        }
+        send -- "$line\r"
+    }
+    expect eof
+}
+
+set root [file normalize [file join [file dirname [info script]] ".."]]
+set binary [file join $root build paging_lab]
+set data_dir [file join $root data]
+
+if {$argc == 0} {
+    puts "用法: scripts/run_cases.exp <case-file|--all>"
+    exit 1
+}
+
+if {[lindex $argv 0] eq "--all"} {
+    foreach case_file [lsort [glob -nocomplain [file join $data_dir *.txt] [file join $data_dir *.in]]] {
+        puts "===== [file tail $case_file] ====="
+        feed_case $binary $case_file
+    }
+    exit 0
+}
+
+set target [lindex $argv 0]
+if {[file pathtype $target] ne "absolute"} {
+    set target [file join $root $target]
+}
+
+feed_case $binary $target

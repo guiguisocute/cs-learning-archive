@@ -1,0 +1,10 @@
+1
+1
+job_single_fifo
+8
+1 2 3 3 2 4 2 3
+2
+job_single_lru
+8
+1 2 3 3 2 4 2 3
+0
