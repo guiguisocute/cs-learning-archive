@@ -38,24 +38,26 @@ static int find_job_index(const char *job_name)
     return -1;
 }
 
-
 void print(void)
 {
     int row;
     int col;
 
-    printf("\n========== 辅存位示图 ==========\n");
-    printf("总块数：%d\t空闲块数：%d\t字长：%d\n", sum, available, word);
-    printf("行数：%d（每行对应一个字）\n", line);
+    printf("******************************辅存使用情况******************************\n");
+    printf("    ");
+    for (col = 0; col < word; ++col) {
+        printf("%3d", col);
+    }
+    printf("\n");
 
     for (row = 0; row < line; ++row) {
-        printf("字%03d: ", row);
+        printf("%-4d", row);
         for (col = 0; col < word && row * word + col < sum; ++col) {
-            printf("%d ", map[row][col]);
+            printf("%3d", map[row][col]);
         }
         printf("\n");
     }
-    printf("================================\n");
+    printf("辅存剩余空闲块数：%d\n", available);
 }
 
 void allocate(void)
@@ -70,8 +72,7 @@ void allocate(void)
     int i;
     linklist *tail;
 
-    print();
-    printf("请输入作业名和作业需要的辅存空间大小：");
+    printf("请输入申请空间的作业名和需要分配辅存空间的大小（单位：K）：");
     if (scanf("%9s %d", job_name, &need_size) != 2) {
         printf("输入格式错误，无法继续分配。\n");
         return;
@@ -107,13 +108,6 @@ void allocate(void)
     node->size = need_size;
     node->next = NULL;
 
-    /*
-     * TODO:
-     * 1. 顺序扫描 map[][]，遇到 0 就尝试分配。
-     * 2. 记录块号、字号、位号。
-     * 3. 将物理块号换算为柱面号、磁头号、扇区号。
-     * 4. 修改 map[][] 和 available，并把作业挂到 work 链表上。
-     */
     found = 0;
     block_no = 0;
     for (row = 0; row < line && found < need_size; ++row) {
@@ -144,16 +138,17 @@ void allocate(void)
         tail->next = node;
     }
 
-    printf("\n作业 %s 分配成功，共分配 %d 块：\n", job_name, need_size);
-    printf("%-6s %-8s %-8s %-8s %-8s %-8s\n",
-           "块号", "字号", "位号", "柱面号", "磁头号", "扇区号");
+    printf("作业申请成功！\n");
+    print();
+
+    printf("********************%s被分配的辅存********************\n", job_name);
+    printf("序号\t块\t字\t位\t柱面号\t磁头号\t扇区号\n");
     for (i = 0; i < need_size; ++i) {
-        printf("%-6d %-8d %-8d %-8d %-8d %-8d\n",
+        printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
+               i + 1,
                node->a[i], node->zihao[i], node->weihao[i],
                node->zhu[i], node->citou[i], node->shanqu[i]);
     }
-    printf("剩余空闲块数：%d\n", available);
-    print();
 }
 
 void recycle(void)
@@ -164,20 +159,28 @@ void recycle(void)
     int freed_size;
     int i;
 
-    print();
-    printf("请输入要回收的作业名：");
+    /* 显示当前已分配的作业链表 */
+    printf("当前分配的作业：");
+    if (work == NULL) {
+        printf("（无）\n");
+    } else {
+        current = work;
+        while (current != NULL) {
+            printf("%s", current->name);
+            if (current->next != NULL) {
+                printf("->");
+            }
+            current = current->next;
+        }
+        printf("\n");
+    }
+
+    printf("要回收的作业名：");
     if (scanf("%9s", job_name) != 1) {
         printf("输入格式错误，无法继续回收。\n");
         return;
     }
 
-    /*
-     * TODO:
-     * 1. 在 work 链表中找到对应作业结点。
-     * 2. 按记录的字号/位号把 map[][] 重新置为 0。
-     * 3. 回收块数后更新 available。
-     * 4. 从链表删除该结点并释放内存。
-     */
     prev = NULL;
     current = work;
     while (current != NULL) {
@@ -206,8 +209,8 @@ void recycle(void)
     }
     free(current);
 
-    printf("作业 %s 已成功回收，释放 %d 块，当前空闲块数：%d\n",
-           job_name, freed_size, available);
+    printf("回收成功！\n");
+    (void)freed_size;
     print();
 }
 
@@ -225,7 +228,6 @@ void init(void)
     mode = getenv("BITMAP_LAB_INIT_MODE");
 
     if (mode != NULL && strcmp(mode, "empty") == 0) {
-        /* All-zeros for reproducible testing */
         for (row = 0; row < line; ++row) {
             for (col = 0; col < word && block_no < sum; ++col) {
                 map[row][col] = 0;
@@ -233,10 +235,6 @@ void init(void)
             }
         }
     } else {
-        /*
-         * TODO:
-         * 随机初始化：约 20% 的块随机标记为已占用，同步修正 available。
-         */
         for (row = 0; row < line; ++row) {
             for (col = 0; col < word && block_no < sum; ++col) {
                 if (rand() % 5 == 0) {
@@ -255,12 +253,11 @@ int menu(void)
 {
     int choice;
 
-    printf("\n========== 菜单 ==========\n");
-    printf("1. 为作业分配空间\n");
-    printf("2. 回收作业空间\n");
-    printf("0. 退出程序\n");
-    printf("==========================\n");
-    printf("请输入你的选择：");
+    printf("****************存储调度管理****************\n");
+    printf("*    1.空间分配            *\n");
+    printf("*    2.空间回收            *\n");
+    printf("*    0.退出                *\n");
+    printf("请输入选项：");
 
     if (scanf("%d", &choice) != 1) {
         printf("输入格式错误，程序结束。\n");
@@ -275,7 +272,6 @@ int menu(void)
         recycle();
         break;
     case 0:
-        printf("程序结束。\n");
         break;
     default:
         printf("无效选项，请重新输入。\n");

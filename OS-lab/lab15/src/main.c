@@ -8,7 +8,7 @@ int main(void)
         return 1;
     }
 
-    printf("请输入该辅存硬盘的磁头数和每个磁道的扇区数：");
+    printf("请输入该辅存硬盘的磁道数（磁头数）和每个磁道的扇区数：");
     if (scanf("%d %d", &head, &sector) != 2) {
         fprintf(stderr, "输入格式错误，程序结束。\n");
         return 1;

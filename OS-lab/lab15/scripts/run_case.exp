@@ -7,7 +7,7 @@ proc run_case {case_file} {
 
     set lines [split $file_data "\n"]
 
-    spawn ./bitmap_lab
+    spawn ./build/bitmap_lab
 
     foreach raw_line $lines {
         set line [string trim $raw_line]
