@@ -11,7 +11,7 @@ SOURCES := \
 	src/scheduler_sstf.c \
 	src/scheduler_scan.c
 
-.PHONY: all run test scaffold-check plot-example clean
+.PHONY: all run test scaffold-check plot-example plot-all clean
 
 all: $(TARGET)
 
@@ -33,6 +33,9 @@ test: scaffold-check
 
 plot-example:
 	python3 scripts/plot_schedule.py --title SSTF --sequence 53 65 67 37 14 98 122 124 183 --output $(BUILD_DIR)/sstf.svg
+
+plot-all:
+	cd scripts/plot_all && uv run main.py --save
 
 clean:
 	rm -rf $(BUILD_DIR)

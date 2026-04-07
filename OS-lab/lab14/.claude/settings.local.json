@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /home/guiguisocute/Project/jxnu-OS-src/lab*/docs -type f)",
+      "Bash(uv init:*)",
+      "Bash(uv add:*)",
+      "Bash(uv run:*)"
+    ]
+  }
+}
