@@ -22,20 +22,40 @@ static void clear_bitmap(void)
     }
 }
 
-static int find_job_index(const char *job_name)
+static void fill_block_record(linklist *node, int index, int block_no)
+{
+    int cylinder_offset;
+
+    node->a[index] = block_no;
+    node->zihao[index] = block_no / word;
+    node->weihao[index] = block_no % word;
+
+    cylinder_offset = block_no % cylinder;
+    node->zhu[index] = block_no / cylinder;
+    node->citou[index] = cylinder_offset / sector;
+    node->shanqu[index] = cylinder_offset % sector;
+}
+
+static linklist *find_job(const char *job_name, linklist **prev_out)
 {
     linklist *current = work;
-    int index = 1;
+    linklist *prev = NULL;
 
     while (current != NULL) {
         if (strcmp(current->name, job_name) == 0) {
-            return index;
+            if (prev_out != NULL) {
+                *prev_out = prev;
+            }
+            return current;
         }
+        prev = current;
         current = current->next;
-        ++index;
     }
 
-    return -1;
+    if (prev_out != NULL) {
+        *prev_out = NULL;
+    }
+    return NULL;
 }
 
 void print(void)
@@ -57,7 +77,7 @@ void print(void)
         }
         printf("\n");
     }
-    printf("辅存剩余空闲块数：%d\n", available);
+    printf("辅存剩余空闲块数: %d\n", available);
 }
 
 void allocate(void)
@@ -72,7 +92,7 @@ void allocate(void)
     int i;
     linklist *tail;
 
-    printf("请输入申请空间的作业名和需要分配辅存空间的大小（单位：K）：");
+    printf("请输入申请空间的作业名字和需要分配辅存空间的大小(单位: K): ");
     if (scanf("%9s %d", job_name, &need_size) != 2) {
         printf("输入格式错误，无法继续分配。\n");
         return;
@@ -88,7 +108,7 @@ void allocate(void)
         return;
     }
 
-    if (find_job_index(job_name) != -1) {
+    if (find_job(job_name, NULL) != NULL) {
         printf("存在同名作业，请先回收或更换作业名。\n");
         return;
     }
@@ -113,12 +133,7 @@ void allocate(void)
     for (row = 0; row < line && found < need_size; ++row) {
         for (col = 0; col < word && block_no < sum && found < need_size; ++col) {
             if (map[row][col] == 0) {
-                node->a[found] = block_no;
-                node->zihao[found] = row;
-                node->weihao[found] = col;
-                node->zhu[found] = block_no / cylinder;
-                node->citou[found] = (block_no % cylinder) / sector;
-                node->shanqu[found] = (block_no % cylinder) % sector;
+                fill_block_record(node, found, block_no);
                 map[row][col] = 1;
                 ++found;
             }
@@ -138,13 +153,13 @@ void allocate(void)
         tail->next = node;
     }
 
-    printf("作业申请成功！\n");
+    printf("辅存申请成功!\n");
     print();
 
-    printf("********************%s被分配的辅存********************\n", job_name);
-    printf("序号\t块\t字\t位\t柱面号\t磁头号\t扇区号\n");
+    printf("*******************%s被分配的辅存*******************\n", job_name);
+    printf("    序号  块号  字  位  柱面号  磁头号  扇区号\n");
     for (i = 0; i < need_size; ++i) {
-        printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
+        printf("    %-5d %-5d %-3d %-4d %-6d %-7d %d\n",
                i + 1,
                node->a[i], node->zihao[i], node->weihao[i],
                node->zhu[i], node->citou[i], node->shanqu[i]);
@@ -175,21 +190,13 @@ void recycle(void)
         printf("\n");
     }
 
-    printf("要回收的作业名：");
+    printf("请输入要回收的作业名字: ");
     if (scanf("%9s", job_name) != 1) {
         printf("输入格式错误，无法继续回收。\n");
         return;
     }
 
-    prev = NULL;
-    current = work;
-    while (current != NULL) {
-        if (strcmp(current->name, job_name) == 0) {
-            break;
-        }
-        prev = current;
-        current = current->next;
-    }
+    current = find_job(job_name, &prev);
 
     if (current == NULL) {
         printf("未找到作业 %s ，回收失败。\n", job_name);
@@ -223,8 +230,6 @@ void init(void)
 
     clear_bitmap();
     available = sum;
-    srand((unsigned int)time(NULL));
-
     mode = getenv("BITMAP_LAB_INIT_MODE");
 
     if (mode != NULL && strcmp(mode, "empty") == 0) {
@@ -234,10 +239,21 @@ void init(void)
                 ++block_no;
             }
         }
-    } else {
+    } else if (mode != NULL && strcmp(mode, "random") == 0) {
+        srand((unsigned int)time(NULL));
         for (row = 0; row < line; ++row) {
             for (col = 0; col < word && block_no < sum; ++col) {
                 if (rand() % 5 == 0) {
+                    map[row][col] = 1;
+                    --available;
+                }
+                ++block_no;
+            }
+        }
+    } else {
+        for (row = 0; row < line; ++row) {
+            for (col = 0; col < word && block_no < sum; ++col) {
+                if (block_no % 3 == 0) {
                     map[row][col] = 1;
                     --available;
                 }
@@ -253,11 +269,11 @@ int menu(void)
 {
     int choice;
 
-    printf("****************存储调度管理****************\n");
-    printf("*    1.空间分配            *\n");
-    printf("*    2.空间回收            *\n");
-    printf("*    0.退出                *\n");
-    printf("请输入选项：");
+    printf("**********辅存调度管理**********\n");
+    printf("* 1. 空间分配        *\n");
+    printf("* 2. 空间去配        *\n");
+    printf("* 0. 退出            *\n");
+    printf("**********请输入选项");
 
     if (scanf("%d", &choice) != 1) {
         printf("输入格式错误，程序结束。\n");

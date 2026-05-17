@@ -15,9 +15,19 @@ proc run_case {case_file} {
             continue
         }
         expect {
-            "：" {}
-            "choice：" {}
-            eof { exit 1 }
+            -re {块长.*[:：]} {}
+            -re {扇区数.*[:：]} {}
+            -re {请输入选项} {}
+            -re {申请空间.*大小.*[:：]} {}
+            -re {回收.*作业.*[:：]} {}
+            timeout {
+                puts "等待输入提示超时，未发送：$line"
+                exit 1
+            }
+            eof {
+                puts "程序提前结束，未发送：$line"
+                exit 1
+            }
         }
         send -- "$line\r"
     }

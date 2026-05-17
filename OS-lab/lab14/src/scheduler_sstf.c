@@ -6,7 +6,7 @@ void SSTF(void)
 {
     struct scheduler_snapshot snapshot;
 
-    printf("\n***********SSTF磁盘移臂调度过程***********\n");
+    printf("\n************SSTF磁盘移臂调度过程************\n");
     in();
     clear_result();
     capture_snapshot(&snapshot);
@@ -48,6 +48,6 @@ void SSTF(void)
         result[count++] = current;
     }
 
-    print_path("最短优先的顺序为：", result, count);
-    printf("移动柱面为：%d\n", calc_total_movement(result, count));
+    print_path("最短优先的顺序为:", result, count);
+    printf("移动柱面为: %d\n", calc_total_movement(result, count));
 }

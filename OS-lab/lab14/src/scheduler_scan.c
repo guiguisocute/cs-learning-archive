@@ -7,7 +7,7 @@ void Oneway_scan(void)
     struct scheduler_snapshot snapshot;
     int sorted[N];
 
-    printf("\n***********单向扫描过程***********\n");
+    printf("\n************单向扫描过程************\n");
     in();
     clear_result();
     capture_snapshot(&snapshot);
@@ -33,8 +33,8 @@ void Oneway_scan(void)
         result[count++] = sorted[i];
     }
 
-    print_path("单向扫描移动的顺序为：", result, count);
-    printf("移动柱面为：%d\n", calc_total_movement(result, count));
+    print_path("单向扫描移动的顺序为:", result, count);
+    printf("移动柱面为: %d\n", calc_total_movement(result, count));
 }
 
 void Twoway_scan(void)
@@ -42,7 +42,7 @@ void Twoway_scan(void)
     struct scheduler_snapshot snapshot;
     int sorted[N];
 
-    printf("\n***********双向扫描过程***********\n");
+    printf("\n************双向扫描过程************\n");
     in();
     clear_result();
     capture_snapshot(&snapshot);
@@ -67,8 +67,8 @@ void Twoway_scan(void)
         result[count2++] = sorted[i2];
     }
 
-    print_path("双向扫描移动的顺序为：", result, count2);
-    printf("移动柱面为：%d\n", calc_total_movement(result, count2));
+    print_path("双向扫描移动的顺序为:", result, count2);
+    printf("移动柱面为: %d\n", calc_total_movement(result, count2));
 }
 
 void Elevator(void)
@@ -76,7 +76,7 @@ void Elevator(void)
     struct scheduler_snapshot snapshot;
     int sorted[N];
 
-    printf("\n***********电梯调度过程***********\n");
+    printf("\n************电梯调度过程************\n");
     in();
     clear_result();
     capture_snapshot(&snapshot);
@@ -100,6 +100,20 @@ void Elevator(void)
         result[count3++] = sorted[i3];
     }
 
-    print_path("电梯调度(由里向外)移动的顺序为：", result, count3);
-    printf("移动柱面为：%d\n", calc_total_movement(result, count3));
+    print_path("电梯调度(由里向外)移动的顺序为:", result, count3);
+    printf("移动柱面为: %d\n", calc_total_movement(result, count3));
+
+    int outward[N];
+    int outward_count = 0;
+
+    outward[outward_count++] = snapshot.current_cylinder;
+    for (i3 = split3; i3 < snapshot.request_count; ++i3) {
+        outward[outward_count++] = sorted[i3];
+    }
+    for (i3 = split3 - 1; i3 >= 0; --i3) {
+        outward[outward_count++] = sorted[i3];
+    }
+
+    print_path("电梯调度(由外向里)移动的顺序为:", outward, outward_count);
+    printf("移动柱面为: %d\n", calc_total_movement(outward, outward_count));
 }

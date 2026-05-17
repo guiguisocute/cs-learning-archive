@@ -6,7 +6,7 @@ void FCFS(void)
 {
     struct scheduler_snapshot snapshot;
 
-    printf("\n***********FCFS磁盘移臂调度过程***********\n");
+    printf("\n************FCFS磁盘移臂调度过程************\n");
     in();
     clear_result();
     capture_snapshot(&snapshot);
@@ -24,6 +24,6 @@ void FCFS(void)
         result[count++] = snapshot.requests[i];
     }
 
-    print_path("移动的顺序为：", result, count);
-    printf("移动柱面为：%d\n", calc_total_movement(result, count));
+    print_path("移动的顺序为:", result, count);
+    printf("移动柱面为: %d\n", calc_total_movement(result, count));
 }
