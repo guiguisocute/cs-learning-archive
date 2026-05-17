@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(make clean *)",
+      "Bash(make student *)",
+      "Bash(./bin/student_lab)",
+      "Bash(time ./scripts/run_case.exp --case data/case_sample.txt)",
+      "Bash(echo \"exit=$?\")",
+      "Read(//tmp/**)",
+      "Read(//home/guiguisocute/Project/jxnu-OS-src/**)",
+      "Bash(tar --exclude='lab12/docs' -czf lab12.tar.gz lab12)",
+      "Bash(tar -tzf lab12.tar.gz)"
+    ]
+  }
+}

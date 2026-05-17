@@ -4,7 +4,17 @@
       "Bash(find /home/guiguisocute/Project/jxnu-OS-src/lab*/docs -type f)",
       "Bash(uv init:*)",
       "Bash(uv add:*)",
-      "Bash(uv run:*)"
+      "Bash(uv run:*)",
+      "Bash(make)",
+      "Bash(./build/disk_scheduler)",
+      "Bash(python3 tests/check_reference_output.py)",
+      "Read(//home/guiguisocute/Project/jxnu-OS-src/**)",
+      "Bash(tar -czf lab14.tar.gz --exclude='lab14/docs' lab14)",
+      "Bash(tar -tzf lab14.tar.gz)",
+      "Bash(rm -f lab14.tar.gz)",
+      "Bash(tar -czf lab14.tar.gz --exclude='lab14/docs' --exclude='lab14/scripts/plot_all/.venv' --exclude='lab14/lab14.tar.gz' lab14)",
+      "Bash(chmod +x scripts/run_case.exp)",
+      "Bash(./scripts/run_case.exp --case data/case_fcfs.txt)"
     ]
   }
 }

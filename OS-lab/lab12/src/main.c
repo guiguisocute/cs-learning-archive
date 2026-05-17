@@ -37,7 +37,7 @@ void distribute(char *name, int size) {
         return;
     }
 
-    io_print_message(message);
+    io_print_bitmap();
     io_print_job_detail(mem_find_job(name));
 }
 
@@ -47,7 +47,7 @@ void recycle(char *name) {
     /* TODO: 调用 mem_recycle_job，并在回收后刷新显示。 */
     mem_recycle_job(name, message, sizeof(message));
     io_print_message(message);
-    Print();
+    io_print_bitmap();
 }
 
 void menu(void) {
@@ -93,22 +93,24 @@ int main(void) {
     Print();
 
     while (1) {
+        int segment_size;
+        int remaining_size;
+
         menu();
-        printf("请输入你的选择:");
         if (scanf("%d", &choose) != 1) {
             break;
         }
 
         if (choose == 1) {
-            printf("请输入作业名:");
+            printf("请输入作业名: ");
             if (scanf("%63s", name) != 1) {
                 break;
             }
-            printf("请输入%s所需主存大小:", name);
+            printf("请输入%s所需主存大小: ", name);
             if (scanf("%d", &size) != 1) {
                 break;
             }
-            printf("请输入段数:");
+            printf("请输入要将作业分成几段: ");
             if (scanf("%d", &current_segment_count) != 1) {
                 break;
             }
@@ -117,33 +119,38 @@ int main(void) {
                 continue;
             }
             memset(current_page_counts, 0, sizeof(current_page_counts));
+            remaining_size = size;
             for (segment_index = 0; segment_index < current_segment_count; ++segment_index) {
-                printf("请输入第%d段页数:", segment_index);
-                if (scanf("%d", &current_page_counts[segment_index]) != 1) {
+                printf("剩余%d的内存未分配, 请输入第%d段的大小: ", remaining_size, segment_index);
+                if (scanf("%d", &segment_size) != 1) {
                     return 1;
                 }
+                remaining_size -= segment_size;
+                current_page_counts[segment_index] =
+                    g_memory.block_length > 0 ? segment_size / g_memory.block_length : segment_size;
+                puts("内存分配成功!");
             }
             distribute(name, size);
         } else if (choose == 2) {
-            printf("请输入作业名:");
+            printf("请输入作业名: ");
             if (scanf("%63s", name) != 1) {
                 break;
             }
             recycle(name);
         } else if (choose == 3) {
-            printf("请输入作业名:");
+            printf("请输入作业名: ");
             if (scanf("%63s", name) != 1) {
                 break;
             }
-            printf("请输入段号:");
+            printf("请输入段号: ");
             if (scanf("%d", &segment_no) != 1) {
                 break;
             }
-            printf("请输入页号:");
+            printf("请输入页号: ");
             if (scanf("%d", &page_no) != 1) {
                 break;
             }
-            printf("请输入页内偏移:");
+            printf("请输入页内偏移: ");
             if (scanf("%d", &offset) != 1) {
                 break;
             }

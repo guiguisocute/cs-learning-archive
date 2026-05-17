@@ -4,13 +4,13 @@
 #include <stdio.h>
 
 void io_print_menu(void) {
-    puts("**********************菜单**********************");
-    puts("*              1. 内存分配                    *");
-    puts("*              2. 内存回收                    *");
-    puts("*              3. 地址转换                    *");
-    puts("*              4. 查看当前内存状态            *");
-    puts("*              0. 退出                        *");
-    puts("**********************************************");
+    puts("**********可变分区管理**********");
+    puts("* 1. 内存分配    *");
+    puts("* 2. 内存去配    *");
+    puts("* 3. 地址转换    *");
+    puts("* 4. 查看内存    *");
+    puts("* 0. 退出        *");
+    printf("**********请输入选项: ");
 }
 
 void io_print_unavailable(const char *feature_name) {
@@ -23,20 +23,19 @@ void io_print_bitmap(void) {
     int index;
 
     /* TODO: 按题目截图风格输出主存位示图。 */
-    puts("主存位示图如下：");
-    printf("共 %d 块(列宽为 %d)\n", g_memory.block_count, g_memory.word_length);
-    printf("   ");
+    puts("主存位示图如下所示:");
+    printf("  ");
     for (col = 0; col < g_memory.word_length; ++col) {
-        printf("%2d ", col);
+        printf("%3d", col);
     }
     putchar('\n');
 
     for (row = 0; row < g_memory.word_count; ++row) {
-        printf("%2d ", row);
+        printf("%-2d", row);
         for (col = 0; col < g_memory.word_length; ++col) {
             index = row * g_memory.word_length + col;
             if (index < g_memory.block_count) {
-                printf("%2d ", mem_block_is_used(index));
+                printf("%3d", mem_block_is_used(index));
             } else {
                 printf("   ");
             }
@@ -55,17 +54,13 @@ void io_print_job_detail(const struct job_node *job) {
         return;
     }
 
-    printf("作业名: %s\n", job->name);
-    printf("作业大小: %d\n", job->requested_size);
-    printf("段数: %d\n", job->segment_count);
+    printf("作业%s的分配情况如下:\n", job->name);
 
     for (segment_index = 0; segment_index < job->segment_count; ++segment_index) {
-        printf("段号:%d 页数:%d\n",
-               job->segments[segment_index].segment_no,
-               job->segments[segment_index].page_count);
-        puts("页号  块号");
+        printf("      第%d段:\n", job->segments[segment_index].segment_no);
+        puts("            页号    块号");
         for (page_index = 0; page_index < job->segments[segment_index].page_count; ++page_index) {
-            printf("%3d %4d\n",
+            printf("            %-8d%d\n",
                    job->segments[segment_index].pages[page_index].page_no,
                    job->segments[segment_index].pages[page_index].block_no);
         }

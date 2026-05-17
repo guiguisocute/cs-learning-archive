@@ -49,7 +49,7 @@ run_sample_case() {
     run_reference_case "data/case_sample.txt" "$output_file"
     assert_contains "$output_file" "位示图"
     assert_contains "$output_file" "分配成功"
-    assert_contains "$output_file" "作业名: job1"
+    assert_contains "$output_file" "作业job1的分配情况如下"
     assert_contains "$output_file" "页号"
 }
 
@@ -57,7 +57,7 @@ run_recycle_case() {
     local output_file
     output_file="$(mktemp)"
     run_reference_case "data/case_multi_job.txt" "$output_file"
-    assert_contains "$output_file" "作业 job1 回收成功"
+    assert_contains "$output_file" "去配成功"
     assert_contains "$output_file" "剩余空闲块数"
 
     output_file="$(mktemp)"

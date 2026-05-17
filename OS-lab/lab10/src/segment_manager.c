@@ -301,7 +301,7 @@ int operation(node *head)
     printf("*        1.内存分配            *\n");
     printf("*        2.内存去配            *\n");
     printf("*        0.退出                *\n");
-    printf("请输入入选项[%d]\n", 0);
+    printf("请输入选项[%d]\n", 0);
     choice = read_int();
 
     switch (choice)
@@ -353,7 +353,7 @@ void firstAllocation(node *head, int size, char c[10])
     /* TODO:
      * 按段进行最先适应分配，并维护段表。
      */
-    printf("请输入作业要分成的段数: ");
+    printf("请输入要分成几段: ");
     segment_count = read_int();
 
     if (segment_count <= 0 || segment_count > MAX_SEGMENTS)

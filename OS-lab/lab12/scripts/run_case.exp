@@ -48,9 +48,8 @@ proc replay_case {binary input_file} {
             continue
         }
         expect {
-            -re "：$" {}
-            -re ":$" {}
-            -re "选择:$" {}
+            -re "：\\s*$" {}
+            -re ":\\s*$" {}
             timeout {}
             eof { return }
         }

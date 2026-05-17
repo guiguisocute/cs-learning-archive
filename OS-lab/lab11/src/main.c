@@ -60,22 +60,22 @@ static int find_page(const int frames[], int used_frames, int page_no)
 
 void out(void)
 {
-    puts("***********请求分页式存储管理***********");
-    puts("\t*\t1.FIFO分配\t*\t");
-    puts("\t*\t2.LRU(LFU)分配\t*\t");
-    puts("\t*\t0.退出\t*\t");
-    printf("\t\t请输入选项：");
+    puts("**********请求分页式存储管理**********");
+    puts("* 1. FIFO分配        *");
+    puts("* 2. LRU(LFU)分配    *");
+    puts("* 0. 退出            *");
+    printf("**********请输入选项: ");
 }
 
 void input(void)
 {
     int i;
 
-    printf("请输入作业名：");
+    printf("请输入作业名: ");
     scanf("%63s", job_name);
-    printf("请输入作业页面长度：");
+    printf("请输入作业页面长度: ");
     scanf("%d", &job_length);
-    printf("请输入作业页面顺序：\n");
+    printf("请输入作业页面顺序: \n");
     for (i = 0; i < job_length; ++i) {
         scanf("%d", &page_seq[i]);
     }
@@ -94,21 +94,30 @@ void print(void)
      * 4. 打印缺页页号行。
      * 5. 打印缺页率。
      */
-    printf("************作业%s%s调度进入主存页的过程************\n", job_name, title);
+    printf("**********打印作业%s调度进入主存页的过程**********\n", title);
+    printf("作业名: %s\n", job_name);
     if (!has_schedule_result) {
-        puts("调度过程：");
+        puts("作业调度过程: ");
         puts("TODO: 请先在 solve1/solve2 中完成页面置换核心逻辑。");
         return;
     }
 
-    puts("调度过程：");
+    puts("作业调度过程: ");
 
+    printf("  ");
     for (col = 0; col < job_length; ++col) {
         printf("%3d", col);
     }
     putchar('\n');
 
+    printf("  ");
+    for (col = 0; col < job_length; ++col) {
+        printf("%3d", page_seq[col]);
+    }
+    putchar('\n');
+
     for (row = 0; row < frame_count_limit; ++row) {
+        printf("%-2d", row);
         for (col = 0; col < job_length; ++col) {
             if (frame_snapshot[row][col] >= 0) {
                 printf("%3d", frame_snapshot[row][col]);
@@ -119,6 +128,7 @@ void print(void)
         putchar('\n');
     }
 
+    printf("  ");
     for (col = 0; col < job_length; ++col) {
         if (page_fault[col]) {
             printf("%3c", '+');
@@ -128,6 +138,7 @@ void print(void)
     }
     putchar('\n');
 
+    printf("  ");
     for (col = 0; col < job_length; ++col) {
         if (fault_page[col] >= 0) {
             printf("%3d", fault_page[col]);
@@ -137,38 +148,43 @@ void print(void)
     }
     putchar('\n');
 
-    printf("缺页率为：%.2f\n", (double)fault_total * 100.0 / (double)job_length);
+    printf("缺页中断率为: %.2f\n", (double)fault_total * 100.0 / (double)job_length);
 }
 
 void solve1(void)
 {
-    int frames[MAX_FRAMES];
+    int disp[MAX_FRAMES];
     int used_frames = 0;
-    int fifo_head = 0;
     int i;
+    int k;
     int hit_index;
+    int shift_from;
 
-    /* TODO:
-     * 实现 FIFO 页面置换算法。
-     * 需要在缺页时设置 page_fault/fault_page，并把每一步快照写入 frame_snapshot。
-     */
+    /* 对角移位显示：disp[0] 为最近装入的页，缺页时整列下移，
+     * 最底端被挤出的页即 FIFO 淘汰页。命中不改变顺序（FIFO）。 */
     reset_run_state();
     current_algorithm = 1;
 
     for (i = 0; i < job_length; ++i) {
-        hit_index = find_page(frames, used_frames, page_seq[i]);
+        hit_index = find_page(disp, used_frames, page_seq[i]);
         if (hit_index < 0) {
             page_fault[i] = 1;
-            fault_page[i] = page_seq[i];
             ++fault_total;
+            if (used_frames == frame_count_limit) {
+                fault_page[i] = disp[frame_count_limit - 1];
+            }
+            shift_from = used_frames < frame_count_limit
+                             ? used_frames
+                             : frame_count_limit - 1;
+            for (k = shift_from; k > 0; --k) {
+                disp[k] = disp[k - 1];
+            }
+            disp[0] = page_seq[i];
             if (used_frames < frame_count_limit) {
-                frames[used_frames++] = page_seq[i];
-            } else {
-                frames[fifo_head] = page_seq[i];
-                fifo_head = (fifo_head + 1) % frame_count_limit;
+                ++used_frames;
             }
         }
-        copy_snapshot(frames, used_frames, i);
+        copy_snapshot(disp, used_frames, i);
     }
 
     has_schedule_result = 1;
@@ -176,45 +192,43 @@ void solve1(void)
 
 void solve2(void)
 {
-    int frames[MAX_FRAMES];
-    int last_used[MAX_FRAMES];
+    int disp[MAX_FRAMES];
     int used_frames = 0;
     int i;
-    int j;
+    int k;
     int hit_index;
-    int replace_index;
+    int shift_from;
 
-    /* TODO:
-     * 实现 LRU 页面置换算法。
-     * 实验材料里写成 LRU(LFU)，但描述"最长时间没有被引用"对应的是 LRU。
-     */
+    /* 对角移位显示：disp[0] 为最近被引用的页。命中时把该页移到列首，
+     * 缺页时整列下移，底端被挤出的页即 LRU 淘汰页。 */
     reset_run_state();
     current_algorithm = 2;
 
     for (i = 0; i < job_length; ++i) {
-        hit_index = find_page(frames, used_frames, page_seq[i]);
+        hit_index = find_page(disp, used_frames, page_seq[i]);
         if (hit_index >= 0) {
-            last_used[hit_index] = i;
+            for (k = hit_index; k > 0; --k) {
+                disp[k] = disp[k - 1];
+            }
+            disp[0] = page_seq[i];
         } else {
             page_fault[i] = 1;
-            fault_page[i] = page_seq[i];
             ++fault_total;
+            if (used_frames == frame_count_limit) {
+                fault_page[i] = disp[frame_count_limit - 1];
+            }
+            shift_from = used_frames < frame_count_limit
+                             ? used_frames
+                             : frame_count_limit - 1;
+            for (k = shift_from; k > 0; --k) {
+                disp[k] = disp[k - 1];
+            }
+            disp[0] = page_seq[i];
             if (used_frames < frame_count_limit) {
-                frames[used_frames] = page_seq[i];
-                last_used[used_frames] = i;
                 ++used_frames;
-            } else {
-                replace_index = 0;
-                for (j = 1; j < frame_count_limit; ++j) {
-                    if (last_used[j] < last_used[replace_index]) {
-                        replace_index = j;
-                    }
-                }
-                frames[replace_index] = page_seq[i];
-                last_used[replace_index] = i;
             }
         }
-        copy_snapshot(frames, used_frames, i);
+        copy_snapshot(disp, used_frames, i);
     }
 
     has_schedule_result = 1;
@@ -224,7 +238,7 @@ int main(void)
 {
     int choice;
 
-    printf("请输入物理块的块数：");
+    printf("请输入物理块的块数: ");
     if (scanf("%d", &frame_count_limit) != 1) {
         return 0;
     }

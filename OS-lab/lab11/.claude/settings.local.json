@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./build/paging_lab_reference)",
+      "Bash(make)",
+      "Bash(./build/paging_lab)",
+      "Bash(scripts/run_cases.exp data/case_3_blocks.txt)",
+      "Bash(time scripts/run_cases.exp --all)",
+      "Bash(tar -tf ../lab08/lab08-no-docs-20260424-204540.tar)",
+      "Read(//home/guiguisocute/Project/jxnu-OS-src/**)",
+      "Bash(tar -tf lab08/lab08-no-docs-20260424-204540.tar)",
+      "Bash(echo \"exit=$?\")",
+      "Bash(tar --exclude='lab11/docs' -czf lab11/lab11-no-docs-20260517.tar.gz lab11)",
+      "Bash(tar -tzf lab11/lab11-no-docs-20260517.tar.gz)",
+      "Bash(rm -f lab11/lab11-no-docs-20260517.tar.gz)",
+      "Bash(tar --exclude='lab11/docs' --exclude='lab11/*.tar.gz' -czf lab11-no-docs-20260517.tar.gz lab11)",
+      "Bash(mv lab11-no-docs-20260517.tar.gz lab11/)"
+    ]
+  }
+}

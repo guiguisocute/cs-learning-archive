@@ -1,0 +1,73 @@
+#!/usr/bin/expect -f
+
+proc usage {} {
+    puts "用法: ./scripts/run_case.exp --case data/case_menu_all.txt | --all"
+    exit 1
+}
+
+set timeout 10
+set case_file ""
+set run_all 0
+
+for {set i 0} {$i < $argc} {incr i} {
+    set arg [lindex $argv $i]
+    if {$arg eq "--case"} {
+        incr i
+        if {$i >= $argc} {
+            usage
+        }
+        set case_file [lindex $argv $i]
+    } elseif {$arg eq "--all"} {
+        set run_all 1
+    } else {
+        usage
+    }
+}
+
+proc detect_binary {} {
+    if {[file executable "./build/disk_scheduler"]} {
+        return "./build/disk_scheduler"
+    }
+    puts "未找到可执行文件，请先运行 make。"
+    exit 1
+}
+
+proc replay_case {binary input_file} {
+    set fh [open $input_file r]
+    set content [read $fh]
+    close $fh
+    set lines [split $content "\n"]
+
+    puts "========== 回放案例: $input_file =========="
+    spawn -noecho $binary
+    foreach line $lines {
+        if {$line eq ""} {
+            continue
+        }
+        expect {
+            -re "：\\s*$" {}
+            -re ":\\s*$" {}
+            -re "\\\[$" {}
+            timeout {}
+            eof { return }
+        }
+        send -- "$line\r"
+    }
+    expect eof
+    puts ""
+}
+
+set binary [detect_binary]
+
+if {$run_all} {
+    foreach file [lsort [glob -nocomplain data/*.txt]] {
+        replay_case $binary $file
+    }
+    exit 0
+}
+
+if {$case_file eq ""} {
+    usage
+}
+
+replay_case $binary $case_file

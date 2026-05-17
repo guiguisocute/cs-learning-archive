@@ -260,7 +260,7 @@ int mem_recycle_job(const char *name, char *message, size_t message_size) {
             }
 
             free(victim);
-            snprintf(message, message_size, "作业 %s 回收成功。", name);
+            snprintf(message, message_size, "去配成功!");
             return 0;
         }
         cursor = &(*cursor)->next;

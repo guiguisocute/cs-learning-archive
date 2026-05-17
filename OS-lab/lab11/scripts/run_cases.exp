@@ -11,7 +11,7 @@ proc feed_case {binary case_file} {
             continue
         }
         expect {
-            "：" {}
+            -re {[:：] ?} {}
             eof { break }
             timeout {}
         }
